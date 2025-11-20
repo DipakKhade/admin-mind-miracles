@@ -1,4 +1,5 @@
 import { getWpGroupMembers } from "@/db/db-queries"
+import { SortDirection } from "mongodb"
 import { type NextRequest, NextResponse } from "next/server"
 
 export async function GET(request: NextRequest) {
