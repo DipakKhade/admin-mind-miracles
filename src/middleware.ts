@@ -9,6 +9,10 @@ export async function middleware(req: NextRequest) {
 
   console.log("middleware triggered:", req.nextUrl.pathname)
 
+  if(req.nextUrl.pathname == "/") {
+    return NextResponse.redirect(new URL("/login", req.url)) 
+  }
+
   if (!token) {
     return NextResponse.redirect(new URL("/login", req.url))
   }
@@ -29,5 +33,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/home/:path*"], 
+  matcher: ["/home/:path*", "/"], 
 }
