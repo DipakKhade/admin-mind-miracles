@@ -1,4 +1,5 @@
 import clientPromise from "./mongo"
+import { SortDirection } from "mongodb"
 
 const DB_NAME = "mindmiracles"
 
@@ -7,7 +8,7 @@ export async function getDatabase() {
   return client.db(DB_NAME)
 }
 
-export async function getUsers(page = 1, limit = 10, search = "", sortBy = "_id", sortOrder = 1) {
+export async function getUsers(page = 1, limit = 10, search = "", sortBy = "_id", sortOrder: SortDirection = "ascending") {
   const db = await getDatabase()
   const skip = (page - 1) * limit
 
@@ -30,7 +31,7 @@ export async function getUsers(page = 1, limit = 10, search = "", sortBy = "_id"
   return { users, total, pages: Math.ceil(total / limit) }
 }
 
-export async function getCourses(page = 1, limit = 10, search = "", sortBy = "_id", sortOrder = 1) {
+export async function getCourses(page = 1, limit = 10, search = "", sortBy = "_id", sortOrder: SortDirection = "ascending") {
   const db = await getDatabase()
   const skip = (page - 1) * limit
 
@@ -49,7 +50,7 @@ export async function getCourses(page = 1, limit = 10, search = "", sortBy = "_i
   return { courses, total, pages: Math.ceil(total / limit) }
 }
 
-export async function getEnrollments(page = 1, limit = 10, search = "", sortBy = "_id", sortOrder = 1) {
+export async function getEnrollments(page = 1, limit = 10, search = "", sortBy = "_id", sortOrder: SortDirection = "ascending") {
   const db = await getDatabase()
   const skip = (page - 1) * limit
 
@@ -72,7 +73,7 @@ export async function getEnrollments(page = 1, limit = 10, search = "", sortBy =
   return { enrollments, total, pages: Math.ceil(total / limit) }
 }
 
-export async function getPayments(page = 1, limit = 10, search = "", sortBy = "_id", sortOrder = 1) {
+export async function getPayments(page = 1, limit = 10, search = "", sortBy = "_id", sortOrder: SortDirection = "ascending") {
   const db = await getDatabase()
   const skip = (page - 1) * limit
 
@@ -82,7 +83,7 @@ export async function getPayments(page = 1, limit = 10, search = "", sortBy = "_
       }
     : {}
 
-  const payments = await db
+  let payments = await db
     .collection("Payment")
     .find(query)
     .sort({ [sortBy]: sortOrder })
@@ -91,11 +92,18 @@ export async function getPayments(page = 1, limit = 10, search = "", sortBy = "_
     .toArray()
 
   const total = await db.collection("Payment").countDocuments(query)
+  
+  payments = payments.map((x:any) => {
+    return {
+      ...x,
+      amount: (x.amount)/100
+    }
+  })
 
   return { payments, total, pages: Math.ceil(total / limit) }
 }
 
-export async function getContactMessages(page = 1, limit = 10, search = "", sortBy = "_id", sortOrder = 1) {
+export async function getContactMessages(page = 1, limit = 10, search = "", sortBy = "_id", sortOrder: SortDirection = "ascending") {
   const db = await getDatabase()
   const skip = (page - 1) * limit
 
@@ -122,7 +130,7 @@ export async function getContactMessages(page = 1, limit = 10, search = "", sort
   return { contacts, total, pages: Math.ceil(total / limit) }
 }
 
-export async function getWpGroupMembers(page = 1, limit = 10, search = "", sortBy = "_id", sortOrder = 1) {
+export async function getWpGroupMembers(page = 1, limit = 10, search = "", sortBy = "_id", sortOrder: SortDirection = "ascending") {
   const db = await getDatabase()
   const skip = (page - 1) * limit
 
@@ -145,7 +153,7 @@ export async function getWpGroupMembers(page = 1, limit = 10, search = "", sortB
   return { members, total, pages: Math.ceil(total / limit) }
 }
 
-export async function getAssessmentResults(page = 1, limit = 10, search = "", sortBy = "_id", sortOrder = 1) {
+export async function getAssessmentResults(page = 1, limit = 10, search = "", sortBy = "_id", sortOrder: SortDirection = "ascending") {
   const db = await getDatabase()
   const skip = (page - 1) * limit
 

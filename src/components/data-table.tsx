@@ -7,6 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { ChevronUp, ChevronDown, Search } from "lucide-react"
+import { SortDirection } from "mongodb"
 
 interface DataTableProps {
   apiUrl: string
@@ -19,6 +20,7 @@ interface DataTableProps {
   title: string
 }
 
+
 export function DataTable({ apiUrl, columns, title }: DataTableProps) {
   const [data, setData] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
@@ -27,8 +29,8 @@ export function DataTable({ apiUrl, columns, title }: DataTableProps) {
   const [limit] = useState(10)
   const [total, setTotal] = useState(0)
   const [pages, setPages] = useState(0)
-  const [sortBy, setSortBy] = useState("_id")
-  const [sortOrder, setSortOrder] = useState(1)
+  const [sortBy, setSortBy] = useState("name")
+  const [sortOrder, setSortOrder] = useState<SortDirection>("ascending")
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -73,10 +75,10 @@ export function DataTable({ apiUrl, columns, title }: DataTableProps) {
 
   const handleSort = (key: string) => {
     if (sortBy === key) {
-      setSortOrder(sortOrder === 1 ? -1 : 1)
+      setSortOrder(sortOrder === "descending" ? "ascending" : "descending")
     } else {
       setSortBy(key)
-      setSortOrder(1)
+      setSortOrder("descending")
     }
     setPage(1)
   }

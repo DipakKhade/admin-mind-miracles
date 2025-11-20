@@ -1,4 +1,5 @@
 import { getCourses } from "@/db/db-queries"
+import { SortDirection } from "mongodb"
 import { type NextRequest, NextResponse } from "next/server"
 
 
@@ -9,7 +10,7 @@ export async function GET(request: NextRequest) {
     const limit = Number.parseInt(searchParams.get("limit") || "10")
     const search = searchParams.get("search") || ""
     const sortBy = searchParams.get("sortBy") || "_id"
-    const sortOrder = Number.parseInt(searchParams.get("sortOrder") || "1")
+    const sortOrder = searchParams.get("sortOrder") as SortDirection || "ascending"
 
     const data = await getCourses(page, limit, search, sortBy, sortOrder)
     return NextResponse.json(data)

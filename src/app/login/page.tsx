@@ -17,7 +17,7 @@ export default function LoginPage() {
             </div>
            
             <p className="text-muted-foreground">
-              Sign in to your account to continue
+              Log in to your account to continue
             </p>
           </div>
           <LoginForm />
