@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation"
 import { Menu, X, LayoutGrid, Users, BookOpen, ShoppingCart, MessageSquare, UserCheck, BarChart3 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import Image from "next/image"
 
 const navItems = [
   { href: "/home", label: "home", icon: LayoutGrid },
@@ -41,7 +42,13 @@ export function Sidebar() {
         )}
       >
         <div className="p-6 border-b border-sidebar-border">
-          <h1 className="text-2xl font-bold text-sidebar-foreground">Admin Panel</h1>
+            <Image
+              src="/mind_miracles_logo.png"
+              alt="Sign in illustration"
+              width={60}
+              height={60}
+              className="object-contain"
+            />
           <p className="text-sm text-muted-foreground mt-1">MindMiracles</p>
         </div>
 
