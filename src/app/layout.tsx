@@ -32,7 +32,7 @@ export default function RootLayout({
       <main>
         {children}
         </main>
-        <Toaster position="top-center" />
+        <Toaster position="bottom-right" />
     </body>
   </html>
   );

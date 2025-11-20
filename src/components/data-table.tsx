@@ -44,7 +44,12 @@ export function DataTable({ apiUrl, columns, title }: DataTableProps) {
   async function fetchData() {
     try {
       setLoading(true)
-      toast.loading("")
+      toast.loading("loading...", {
+        closeButton: true,
+        style: {
+          color: 'green'
+        }
+      })
       const params = new URLSearchParams({
         page: page.toString(),
         limit: limit.toString(),
