@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { ChevronUp, ChevronDown, Search } from "lucide-react"
 import { SortDirection } from "mongodb"
+import { toast } from "sonner"
 
 interface DataTableProps {
   apiUrl: string
@@ -43,6 +44,7 @@ export function DataTable({ apiUrl, columns, title }: DataTableProps) {
   async function fetchData() {
     try {
       setLoading(true)
+      toast.loading("")
       const params = new URLSearchParams({
         page: page.toString(),
         limit: limit.toString(),
@@ -69,6 +71,7 @@ export function DataTable({ apiUrl, columns, title }: DataTableProps) {
     } catch (error) {
       console.error("Error fetching data:", error)
     } finally {
+      toast.dismiss()
       setLoading(false)
     }
   }
@@ -106,7 +109,7 @@ export function DataTable({ apiUrl, columns, title }: DataTableProps) {
       <div className="border rounded-lg overflow-hidden">
         <div className="overflow-x-auto">
           <Table>
-            <TableHeader>
+            <TableHeader className="bg-emerald-200">
               <TableRow>
                 {columns.map((column) => (
                   <TableHead key={column.key} className="px-4 py-3">

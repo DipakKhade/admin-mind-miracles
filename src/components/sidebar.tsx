@@ -29,8 +29,8 @@ export function Sidebar() {
     <>
       {/* Mobile Menu Button */}
       <div className="lg:hidden fixed top-4 left-4 z-40">
-        <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)} className="h-10 w-10">
-          {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)} className="h-10 w-13">
+          {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-8 w-8" />}
         </Button>
       </div>
 
