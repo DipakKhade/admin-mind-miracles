@@ -4,8 +4,8 @@ import { DataTable } from "@/components/data-table"
 import { format } from "date-fns"
 
 const columns = [
-  { key: "userId", label: "User ID", sortable: true },
-  { key: "courseId", label: "Course ID", sortable: true },
+  { key: "userName", label: "User", sortable: true },
+  { key: "courseTitle", label: "Course", sortable: true },
   {
     key: "enrolledAt",
     label: "Enrolled",

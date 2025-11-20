@@ -50,28 +50,71 @@ export async function getCourses(page = 1, limit = 10, search = "", sortBy = "_i
   return { courses, total, pages: Math.ceil(total / limit) }
 }
 
-export async function getEnrollments(page = 1, limit = 10, search = "", sortBy = "_id", sortOrder: SortDirection = "ascending") {
-  const db = await getDatabase()
-  const skip = (page - 1) * limit
+export async function getEnrollments(
+  page = 1,
+  limit = 10,
+  search = "",
+  sortBy = "_id",
+  sortOrder: SortDirection = "ascending"
+) {
+  const db = await getDatabase();
+  const skip = (page - 1) * limit;
 
   const query = search
     ? {
-        $or: [{ userId: { $regex: search, $options: "i" } }, { courseId: { $regex: search, $options: "i" } }],
+        $or: [
+          { userId: { $regex: search, $options: "i" } },
+          { courseId: { $regex: search, $options: "i" } },
+        ],
       }
-    : {}
+    : {};
 
-  const enrollments = await db
-    .collection("Enrollment")
-    .find(query)
-    .sort({ [sortBy]: sortOrder })
-    .skip(skip)
-    .limit(limit)
-    .toArray()
+  const pipeline: any[] = [
+    { $match: query },
+    {
+      $lookup: {
+        from: "User",           
+        localField: "userId",
+        foreignField: "_id",
+        as: "user",
+      },
+    },
+    { $unwind: "$user" },
 
-  const total = await db.collection("Enrollment").countDocuments(query)
+    {
+      $lookup: {
+        from: "Course",
+        localField: "courseId",
+        foreignField: "_id",
+        as: "course",
+      },
+    },
+    { $unwind: "$course" },
 
-  return { enrollments, total, pages: Math.ceil(total / limit) }
+    {
+      $project: {
+        _id: 1,
+        userId: 1,
+        courseId: 1,
+        enrolledAt: 1,
+        certificationId: 1,
+        userName: "$user.name",
+        courseTitle: "$course.title"
+      },
+    },
+
+    { $sort: { [sortBy]: sortOrder === "ascending" ? 1 : -1 } },
+    { $skip: skip },
+    { $limit: limit },
+  ];
+
+  const enrollments = await db.collection("Enrollment").aggregate(pipeline).toArray();
+
+  const total = await db.collection("Enrollment").countDocuments(query);
+
+  return { enrollments, total, pages: Math.ceil(total / limit) };
 }
+
 
 export async function getPayments(page = 1, limit = 10, search = "", sortBy = "_id", sortOrder: SortDirection = "ascending") {
   const db = await getDatabase()
