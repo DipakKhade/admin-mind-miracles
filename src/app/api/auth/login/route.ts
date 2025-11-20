@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
     let admin_username = process.env.ADMIN_USERNAME;
     let admin_password = process.env.ADMIN_PASSWORD;
 
-    if(!username || user_password) {
+    if(!username || !user_password) {
         return  NextResponse.json({
             success: false,
             message: "insufficient params"
@@ -17,6 +17,8 @@ export async function POST(req: NextRequest) {
     }
     
     let token = "";
+
+    console.log(admin_password, admin_username)
 
     if(username === admin_username && user_password === admin_password) {
         token = jwt.sign({username}, process.env.JWT_SEC!, {

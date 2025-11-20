@@ -21,5 +21,5 @@ const columns = [
 ]
 
 export default function TransTheory() {
-  return <DataTable apiUrl="/api/wp-group-members" columns={columns} title="WhatsApp Group Members" />
+  return <DataTable apiUrl="/api/wp-group-members" columns={columns} title="Trans Theory Members" />
 }

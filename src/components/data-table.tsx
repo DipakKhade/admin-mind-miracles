@@ -87,7 +87,7 @@ export function DataTable({ apiUrl, columns, title }: DataTableProps) {
   }
 
   return (
-    <div className="w-full space-y-4">
+    <div className="w-full space-y-4 p-2">
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
         <h2 className="text-2xl font-bold">{title}</h2>
         <div className="relative w-full sm:w-64">
