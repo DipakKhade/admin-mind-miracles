@@ -30,8 +30,8 @@ export function DataTable({ apiUrl, columns, title }: DataTableProps) {
   const [limit] = useState(10)
   const [total, setTotal] = useState(0)
   const [pages, setPages] = useState(0)
-  const [sortBy, setSortBy] = useState("name")
-  const [sortOrder, setSortOrder] = useState<SortDirection>("ascending")
+  const [sortBy, setSortBy] = useState("paidAt")
+  const [sortOrder, setSortOrder] = useState<SortDirection>("descending")
 
   useEffect(() => {
     const timer = setTimeout(() => {
