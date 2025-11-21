@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
     const page = Number.parseInt(searchParams.get("page") || "1")
     const limit = Number.parseInt(searchParams.get("limit") || "10")
     const search = searchParams.get("search") || ""
-    const sortBy = searchParams.get("sortBy") || "_id"
+    const sortBy = searchParams.get("sortBy") || "paidAt"
     const sortOrder = searchParams.get("sortOrder") as SortDirection || "ascending"
 
     const data = await getPayments(page, limit, search, sortBy, sortOrder)
