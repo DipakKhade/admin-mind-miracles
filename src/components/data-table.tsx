@@ -154,7 +154,7 @@ export function DataTable({ apiUrl, columns, title }: DataTableProps) {
                       <TableCell key={`${row._id}-${column.key}`} className="px-4 py-3">
                         {column.render
                           ? column.render(row[column.key], row)
-                          : String(row[column.key] || "-").substring(0, 50)}
+                          : String(row[column.key] || "-")}
                       </TableCell>
                     ))}
                   </TableRow>
