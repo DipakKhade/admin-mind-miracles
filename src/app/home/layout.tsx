@@ -1,12 +1,11 @@
-import { Header } from "@/components/header";
-import { Sidebar } from "@/components/sidebar_old";
+import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { ReactNode } from "react";
 
 export default function HomeLayout({children}:{children: ReactNode}) {
     return <SidebarProvider>
-    {/* <AppSidebar /> */}
-    <main>
+    <AppSidebar />
+    <main className="md:w-[80vw] w-full">
       <SidebarTrigger />
       {children}
     </main>
