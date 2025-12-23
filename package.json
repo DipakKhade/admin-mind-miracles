@@ -9,6 +9,12 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@apollo/client": "^4.0.11",
+    "@apollo/server": "^5.2.0",
+    "@as-integrations/next": "^4.1.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/x-data-grid": "^8.22.1",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-label": "^2.1.8",
     "@radix-ui/react-separator": "^1.1.8",
