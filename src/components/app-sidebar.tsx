@@ -1,20 +1,16 @@
 "use client"
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { LayoutGrid, Users, BookOpen, ShoppingCart, MessageSquare, UserCheck, BarChart3 } from "lucide-react"
-import Image from "next/image"
+import { ReactNode, useState } from "react";
+import { Sidebar, SidebarBody, SidebarLink } from "../components/ui/sidebar";
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar"
+  IconArrowLeft,
+  IconBrandTabler,
+  IconSettings,
+  IconUserBolt,
+} from "@tabler/icons-react";
+import { motion } from "motion/react";
+import { cn } from "@/lib/utils";
+import { LayoutGrid, Users, BookOpen, ShoppingCart, MessageSquare, UserCheck, BarChart3 } from "lucide-react"
 
 const navItems = [
   { href: "/home", label: "Home", icon: LayoutGrid },
@@ -27,49 +23,115 @@ const navItems = [
   { href: "/home/assessments", label: "Assessment Results", icon: BarChart3 },
 ]
 
-export function AppSidebar() {
-  const pathname = usePathname()
+const links = [
+  {
+    label: "Dashboard",
+    href: "#",
+    icon: (
+      <IconBrandTabler className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+    ),
+  },
+  {
+    label: "Profile",
+    href: "#",
+    icon: (
+      <IconUserBolt className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+    ),
+  },
+  {
+    label: "Settings",
+    href: "#",
+    icon: (
+      <IconSettings className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+    ),
+  },
+  {
+    label: "Logout",
+    href: "#",
+    icon: (
+      <IconArrowLeft className="h-5 w-5 shrink-0 text-neutral-700 dark:text-neutral-200" />
+    ),
+  },
+];
 
+
+export function AppSidebar({children}: {children: ReactNode}) {
+  const [open, setOpen] = useState(false);
   return (
-    <Sidebar>
-      <SidebarHeader>
-        <div className="flex items-center gap-3 px-2">
-          <Image
-            src="/mind_miracles_logo.png"
-            alt="MindMiracles logo"
-            width={40}
-            height={40}
-            className="object-contain"
-          />
-          <span className="font-semibold text-sm">MindMiracles</span>
-        </div>
-      </SidebarHeader>
-
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {navItems.map((item) => {
-                const Icon = item.icon
-                const isActive = pathname === item.href
-
-                return (
-                  <SidebarMenuItem key={item.href}>
-                    <SidebarMenuButton asChild isActive={isActive} className="text-base">
-                      <Link href={item.href}>
-                        <Icon className="h-5 w-5" />
-                        <span>{item.label}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                )
-              })}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-
-      <SidebarFooter />
-    </Sidebar>
-  )
+    <div
+      className={cn(
+        "mx-auto flex w-full max-w-7xl flex-1 flex-col overflow-hidden rounded-md border border-neutral-200 bg-gray-100 md:flex-row dark:border-neutral-700 dark:bg-neutral-800 h-screen"
+      )}
+    >
+      <Sidebar open={open} setOpen={setOpen}>
+        <SidebarBody className="justify-between gap-10">
+          <div className="flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
+            {open ? <Logo /> : <LogoIcon />}
+            <div className="mt-8 flex flex-col gap-2">
+              {links.map((link, idx) => (
+                <SidebarLink key={idx} link={link} />
+              ))}
+            </div>
+          </div>
+          <div>
+            <SidebarLink
+              link={{
+                label: "Manu Arora",
+                href: "#",
+                icon: (
+                  <img
+                    src="https://assets.aceternity.com/manu.png"
+                    className="h-7 w-7 shrink-0 rounded-full"
+                    width={50}
+                    height={50}
+                    alt="Avatar"
+                  />
+                ),
+              }}
+            />
+          </div>
+        </SidebarBody>
+      </Sidebar>
+              {children}
+    </div>
+  );
 }
+
+
+export const Logo = () => {
+  return (
+    <a
+      href="#"
+      className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
+    >
+      <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-black dark:bg-white" />
+      <motion.span
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="font-medium whitespace-pre text-black dark:text-white"
+      >
+        Acet Labs
+      </motion.span>
+    </a>
+  );
+};
+
+
+export const LogoIcon = () => {
+  return (
+    <a
+      href="#"
+      className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
+    >
+      <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-black dark:bg-white" />
+    </a>
+  );
+};
+
+const Dashboard = () => {
+  return (
+    <div className="flex flex-1">
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cupiditate perspiciatis, exercitationem consectetur impedit, reiciendis ad magnam modi saepe quasi vel iusto placeat debitis eligendi excepturi dignissimos voluptates, corporis beatae rem.
+    </div>
+  );
+};
