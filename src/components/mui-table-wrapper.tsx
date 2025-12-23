@@ -1,10 +1,10 @@
 import { DataGrid } from '@mui/x-data-grid';
-import { useQuery } from "@apollo/client/react";
 import { graphql_confs } from '@/graphql_confs/queries';
+import { useGetData } from '@/hooks/use-get-data';
 
 export default function MUITableWrapper({collection_key, columns}: {collection_key: string, columns: any[]}) {
 
-    const { loading, error, data } : any = useQuery(graphql_confs.Query.GET_USERS);
+    const { loading, error, data } : any = useGetData(graphql_confs.Query.GET_USERS);
 
     if(loading || error || !data) return <div>Loading...</div>
 
