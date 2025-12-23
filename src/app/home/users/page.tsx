@@ -29,8 +29,8 @@ import MUITableWrapper from "@/components/mui-table-wrapper";
 // ]
 
 const columns = [
-  { field: "name", headerName: "Name", width: 150 },
-  { field: "email", headerName: "Email", width: 100 },
+  { field: "name", headerName: "Name", width: 350 },
+  { field: "email", headerName: "Email", width: 400 },
   { field: "age", headerName: "Age", width: 100 },
   { field: "whatsAppNo", headerName: "WhatsApp", width: 100 }
 ];

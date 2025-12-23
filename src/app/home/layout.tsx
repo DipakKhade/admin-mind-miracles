@@ -1,3 +1,4 @@
+'use client'
 import { AppSidebar } from "@/components/app-sidebar";
 import { ReactNode } from "react";
 import { ApolloProvider } from "@apollo/client/react";

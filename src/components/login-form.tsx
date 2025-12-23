@@ -45,7 +45,7 @@ export function LoginForm() {
         if(response.data.success === true) {
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("username", username);
-
+            console.log('redirecting----------------------')
             router.push("/home");
 
             toast.success("Login Successful", {style: {
