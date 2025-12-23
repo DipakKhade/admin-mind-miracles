@@ -24,21 +24,27 @@ export async function POST(req: NextRequest) {
         token = jwt.sign({username}, process.env.JWT_SEC!, {
             algorithm:'HS256'
         })
+
+        const res =  NextResponse.json({
+            success: true,
+            message: "Sign in successful",
+            token
+        })
+    
+        res.cookies.set("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            path: "/",
+        })
+
+        return res
     }
     
-    const res =  NextResponse.json({
-        success: true,
-        message: "Sign in successful",
-        token
+    return NextResponse.json({
+        success: false,
+        message: "Sign in failed"
     })
-
-    res.cookies.set("token", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-        path: "/",
-    })
-    return res
 
     } catch(error) {
         return NextResponse.json({

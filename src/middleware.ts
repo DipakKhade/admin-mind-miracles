@@ -7,6 +7,7 @@ const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SEC!)
 const PUBLIC_ROUTES = ["/login", "/register"]
 
 export async function middleware(req: NextRequest) {
+  debugger
   const { pathname } = req.nextUrl
   const token = req.cookies.get("token")?.value
 
@@ -24,7 +25,6 @@ export async function middleware(req: NextRequest) {
 
   //  No token → login
   if (!token) {
-    console.log("payload?.userIdpayload?.userIdpayload?.userIdpayload?.userIdpayload?.userId")
     return NextResponse.redirect(new URL("/login", req.url))
   }
 
@@ -34,7 +34,7 @@ export async function middleware(req: NextRequest) {
     })
 
     //  Invalid token payload
-    if (!payload?.userId) {
+    if (!payload?.username) {
       return NextResponse.redirect(new URL("/login", req.url))
     }
 
