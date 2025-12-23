@@ -5,5 +5,5 @@ export const apolloClient = new ApolloClient({
     uri: "/api/graphql",
     credentials: "include",
   }),
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({}),
 });
