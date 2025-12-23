@@ -45,11 +45,11 @@ export function AppSidebar({children}: {children: ReactNode}) {
           <div>
             <SidebarLink
               link={{
-                label: "Manu Arora",
+                label: localStorage.getItem("username") ?? "",
                 href: "#",
                 icon: (
                   <img
-                    src="https://assets.aceternity.com/manu.png"
+                    src="https://mindmiracles.in/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fmind_miracles_logo.8a717bdd.png&w=1080&q=75"
                     className="h-7 w-7 shrink-0 rounded-full"
                     width={50}
                     height={50}
