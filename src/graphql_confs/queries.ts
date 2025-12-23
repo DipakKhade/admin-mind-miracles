@@ -7,6 +7,7 @@ export const graphql_confs = {
         GET_USERS: gql`
             query User {
                 users {
+                    _id
                     name
                     email
                     age
