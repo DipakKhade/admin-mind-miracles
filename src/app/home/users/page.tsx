@@ -29,16 +29,10 @@ import MUITableWrapper from "@/components/mui-table-wrapper";
 // ]
 
 const columns = [
-  { field: "name", headerName: "Name", width: 350 },
-  { field: "email", headerName: "Email", width: 400 },
-  { field: "age", headerName: "Age", width: 100 },
-  { field: "whatsAppNo", headerName: "WhatsApp", width: 100 }
-];
-
-const data = [
-  { id: 1, name: "John Doe", age: 30 },
-  { id: 2, name: "Jane Doe", age: 25 },
-  { id: 3, name: "Bob Smith", age: 35 },
+  { field: "name", headerName: "Name", width: 350, type: 'string' },
+  { field: "email", headerName: "Email", width: 400, type: 'string' },
+  { field: "age", headerName: "Age", width: 100, type: 'number' },
+  { field: "whatsAppNo", headerName: "WhatsApp", width: 100, type: 'string' }
 ];
 
 export default function UsersPage() {
