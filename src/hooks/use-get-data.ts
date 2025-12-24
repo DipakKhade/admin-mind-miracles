@@ -11,11 +11,10 @@ export const useGetData = (query: TypedDocumentNode) => {
             let id = x._id;
             return {
                 ...x,
-                id,
+                id
             };
         });
     }
-    console.log(updated_data)
-    
+
     return { loading, error, data: updated_data };
 }
