@@ -6,7 +6,7 @@ export const type_defs = `#graphql
     email: String
     image: String
     token: String
-    updatedAt: String
+    updatedAt: String 
     sessionToken: String
     whatsAppNo: String
     age: Int

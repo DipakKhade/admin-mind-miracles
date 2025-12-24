@@ -45,7 +45,8 @@ export function AppSidebar({children}: {children: ReactNode}) {
           <div>
             <SidebarLink
               link={{
-                label: localStorage.getItem("username") ?? "",
+                // label: localStorage.getItem("username") ?? "",
+                label: "username",
                 href: "#",
                 icon: (
                   <img
