@@ -29,5 +29,14 @@ export default function MUITableWrapper({collection_key, columns}: {collection_k
             },
         ],
     }}
+
+    slotProps={{
+        toolbar: {
+          showQuickFilter: true,
+          quickFilterProps: { debounceMs: 500 },
+        },
+      }}
+
+      getRowId={(row) => row.id}
   />
 }
