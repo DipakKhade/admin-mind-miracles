@@ -12,7 +12,17 @@ export const type_defs = `#graphql
     age: Int
   }
 
+  type ContactUs {
+    _id: String!
+    firstName: String
+    lastName: String
+    email: String
+    age: Int
+    place: String
+  }
+
   type Query {
     users: [User]
+    contactUs: [ContactUs]
   }
 `;
