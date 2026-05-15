@@ -468,6 +468,7 @@ export default function SessionMasterPage() {
   const [confirmClose, setConfirmClose] = useState<string | null>(null);
 
   const fetchData = useCallback(async () => {
+    const toastId = toast.loading("Processing Request...");
     try {
       const res = await fetch("/api/sessionMaster");
       if (res.ok) {
@@ -477,6 +478,7 @@ export default function SessionMasterPage() {
     } catch {
       toast.error("Failed to load sessions");
     } finally {
+      toast.dismiss(toastId);
       setLoading(false);
     }
   }, []);

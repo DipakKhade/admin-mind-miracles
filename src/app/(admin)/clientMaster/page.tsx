@@ -458,6 +458,7 @@ export default function ClientMasterPage() {
   const [deleting, setDeleting] = useState(false);
 
   const fetchData = useCallback(async () => {
+    const toastId = toast.loading("Processing Request...");
     try {
       const res = await fetch("/api/clientMaster");
       if (res.ok) {
@@ -467,6 +468,7 @@ export default function ClientMasterPage() {
     } catch {
       toast.error("Failed to load clients");
     } finally {
+      toast.dismiss(toastId);
       setLoading(false);
     }
   }, []);

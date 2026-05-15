@@ -9,6 +9,7 @@ import {
   IndianRupee,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import RevenueModal from "@/components/RevenueModal";
 
 export default function DashboardPage() {
@@ -19,6 +20,7 @@ export default function DashboardPage() {
   const [modalOpen, setModalOpen] = useState(false);
 
   const fetchStats = useCallback(async () => {
+    const toastId = toast.loading("Processing Request...");
     try {
       const [revRes, cliRes, sesRes] = await Promise.all([
         fetch("/api/revenue"),
@@ -39,6 +41,8 @@ export default function DashboardPage() {
       }
     } catch {
       // silently fail
+    } finally {
+      toast.dismiss(toastId);
     }
   }, []);
 

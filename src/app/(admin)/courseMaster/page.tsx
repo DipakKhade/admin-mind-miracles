@@ -437,12 +437,14 @@ export default function CourseMasterPage() {
   const [usersModal, setUsersModal] = useState<{ id: string; title: string } | null>(null);
 
   const fetchData = useCallback(async () => {
+    const toastId = toast.loading("Processing Request...");
     try {
       const res = await fetch("/api/courseMaster");
       if (res.ok) setData(await res.json());
     } catch {
       toast.error("Failed to load courses");
     } finally {
+      toast.dismiss(toastId);
       setLoading(false);
     }
   }, []);
