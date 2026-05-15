@@ -11,10 +11,12 @@ import {
   Menu,
   X,
   ChevronRight,
+  BookOpen,
 } from "lucide-react";
 
 const navItems = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { label: "Course Master", href: "/courseMaster", icon: BookOpen },
   { label: "Client Master", href: "/clientMaster", icon: Users },
   { label: "Session Master", href: "/sessionMaster", icon: CalendarClock },
 ];
