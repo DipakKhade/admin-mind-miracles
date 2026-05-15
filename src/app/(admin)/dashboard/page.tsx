@@ -71,22 +71,22 @@ export default function DashboardPage() {
       bg: "bg-yellow-50",
       onClick: () => setModalOpen(true),
     },
-    {
-      label: "This Month",
-      value: "—",
-      icon: TrendingUp,
-      color: "text-violet-600",
-      bg: "bg-violet-50",
-      onClick: undefined,
-    },
-    {
-      label: "Active Now",
-      value: "—",
-      icon: Activity,
-      color: "text-amber-600",
-      bg: "bg-amber-50",
-      onClick: undefined,
-    },
+    // {
+    //   label: "This Month",
+    //   value: "—",
+    //   icon: TrendingUp,
+    //   color: "text-violet-600",
+    //   bg: "bg-violet-50",
+    //   onClick: undefined,
+    // },
+    // {
+    //   label: "Active Now",
+    //   value: "—",
+    //   icon: Activity,
+    //   color: "text-amber-600",
+    //   bg: "bg-amber-50",
+    //   onClick: undefined,
+    // },
   ];
 
   return (
