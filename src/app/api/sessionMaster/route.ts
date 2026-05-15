@@ -46,7 +46,7 @@ export async function POST(req: Request) {
     }
 
     const sessionMaster = await getCollection("mindmiracles", "sessionMaster");
-    const now = new Date().toISOString();
+    const now = new Date();
 
     const sessionDoc = {
       clientId,

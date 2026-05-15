@@ -38,7 +38,7 @@ export async function POST(req: Request) {
     }
 
     const courses = await getCollection("mindmiracles", "Course");
-    const now = new Date().toISOString();
+    const now = new Date();
 
     const doc = {
       title,
@@ -77,7 +77,7 @@ export async function PATCH(req: Request) {
     }
 
     const courses = await getCollection("mindmiracles", "Course");
-    const updateFields: Record<string, unknown> = { updatedAt: new Date().toISOString() };
+    const updateFields: Record<string, unknown> = { updatedAt: new Date() };
 
     if (title !== undefined) updateFields.title = title;
     if (description !== undefined) updateFields.description = description;

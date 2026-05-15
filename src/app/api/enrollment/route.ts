@@ -87,7 +87,7 @@ export async function POST(req: Request) {
     const doc = {
       courseId: new ObjectId(courseId),
       userId: new ObjectId(userId),
-      enrolledAt: new Date().toISOString(),
+      enrolledAt: new Date(),
       certificationId: certId,
     };
 

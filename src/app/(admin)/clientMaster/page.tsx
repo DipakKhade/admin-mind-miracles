@@ -11,6 +11,8 @@ import {
   Plus,
   Loader2,
   Printer,
+  Trash2,
+  Pencil,
 } from "lucide-react";
 import { toast } from "sonner";
 import { formatDate } from "@/lib/utils";
@@ -62,10 +64,11 @@ function CaseHistoryModal({
           fetch(`/api/sessionMaster?clientId=${client.id}`),
           fetch(`/api/sessionFeeMaster`),
         ]);
-        const sessData = await sessRes.json();
-        const feesData = await feesRes.json();
+        const sessData: SessionRecord[] = await sessRes.json();
+        const feesData: FeeRecord[] = await feesRes.json();
+        const sessionIds = new Set(sessData.map((s) => s.id));
         setSessions(sessData);
-        setFees(feesData);
+        setFees(feesData.filter((f) => sessionIds.has(f.sessionId)));
       } catch {
         toast.error("Failed to load case history");
       } finally {
@@ -266,37 +269,44 @@ function CaseHistoryModal({
 }
 
 function AddClientModal({
+  client,
   onClose,
   onSuccess,
 }: {
+  client?: Client | null;
   onClose: () => void;
   onSuccess: () => void;
 }) {
+  const isEdit = !!client;
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    age: "",
-    gender: "",
-    place: "",
+    name: client?.name ?? "",
+    email: client?.email ?? "",
+    phone: client?.phone ?? "",
+    age: client?.age?.toString() ?? "",
+    gender: client?.gender ?? "",
+    place: client?.place ?? "",
   });
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     try {
+      const method = isEdit ? "PATCH" : "POST";
+      const body = isEdit
+        ? { id: client.id, ...form }
+        : form;
       const res = await fetch("/api/clientMaster", {
-        method: "POST",
+        method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(body),
       });
       if (!res.ok) {
         const data = await res.json();
-        toast.error(data.error || "Failed to add client");
+        toast.error(data.error || "Failed to save client");
         return;
       }
-      toast.success("Client added successfully");
+      toast.success(isEdit ? "Client updated" : "Client added");
       onSuccess();
       onClose();
     } catch {
@@ -311,7 +321,7 @@ function AddClientModal({
       <div className="fixed inset-0 bg-black/50" onClick={onClose} />
       <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden">
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-          <h2 className="text-lg font-bold text-gray-900">Add New Client</h2>
+          <h2 className="text-lg font-bold text-gray-900">{isEdit ? "Edit Client" : "Add New Client"}</h2>
           <button
             onClick={onClose}
             className="p-2 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
@@ -419,7 +429,7 @@ function AddClientModal({
               className="px-4 py-2 text-sm font-medium text-white bg-[#0D2B1F] rounded-lg hover:bg-[#1B5E3A] disabled:opacity-60 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
             >
               {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-              {loading ? "Adding..." : "Add Client"}
+              {loading ? "Saving..." : isEdit ? "Save Changes" : "Add Client"}
             </button>
           </div>
         </form>
@@ -443,6 +453,9 @@ export default function ClientMasterPage() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [data, setData] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
+  const [editClient, setEditClient] = useState<Client | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState<Client | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const fetchData = useCallback(async () => {
     try {
@@ -462,21 +475,64 @@ export default function ClientMasterPage() {
     fetchData();
   }, [fetchData]);
 
+  async function handleDelete(client: Client) {
+    setConfirmDelete(client);
+  }
+
+  async function confirmDeleteClient() {
+    if (!confirmDelete) return;
+    setDeleting(true);
+    try {
+      const res = await fetch("/api/clientMaster", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: confirmDelete.id }),
+      });
+      if (!res.ok) {
+        toast.error("Failed to delete client");
+        return;
+      }
+      toast.success("Client deleted");
+      setConfirmDelete(null);
+      fetchData();
+    } catch {
+      toast.error("Something went wrong");
+    } finally {
+      setDeleting(false);
+    }
+  }
+
   const dataColumns: Column<Client>[] = [
     ...columns,
     {
       key: "actions" as never,
       header: "",
-      width: 160,
+      width: 320,
       frozen: true,
       render: (row) => (
-        <button
-          onClick={() => setSelectedClient(row)}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-[#0D2B1F] rounded-lg hover:bg-[#1B5E3A] transition-colors"
-        >
-          <FileText className="w-3.5 h-3.5" />
-          See Case History
-        </button>
+        <div className="flex items-center gap-1.5">
+          <button
+            onClick={() => setSelectedClient(row)}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-[#0D2B1F] rounded-lg hover:bg-[#1B5E3A] transition-colors"
+          >
+            <FileText className="w-3.5 h-3.5" />
+            Case History
+          </button>
+          <button
+            onClick={() => setEditClient(row)}
+            className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+          >
+            <Pencil className="w-3.5 h-3.5" />
+            Edit
+          </button>
+          <button
+            onClick={() => handleDelete(row)}
+            className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            Delete
+          </button>
+        </div>
       ),
     },
   ];
@@ -524,6 +580,43 @@ export default function ClientMasterPage() {
           onClose={() => setShowAddModal(false)}
           onSuccess={fetchData}
         />
+      )}
+
+      {editClient && (
+        <AddClientModal
+          client={editClient}
+          onClose={() => setEditClient(null)}
+          onSuccess={fetchData}
+        />
+      )}
+
+      {confirmDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="bg-white rounded-xl shadow-xl p-6 mx-4 max-w-sm w-full">
+            <h3 className="text-sm font-bold text-gray-900 mb-2">Delete Client</h3>
+            <p className="text-sm text-gray-600 mb-1">
+              Are you sure you want to delete <strong>{confirmDelete.name}</strong>?
+            </p>
+            <p className="text-xs text-gray-400 mb-5">This action cannot be undone.</p>
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={() => setConfirmDelete(null)}
+                disabled={deleting}
+                className="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDeleteClient}
+                disabled={deleting}
+                className="px-3 py-1.5 text-xs font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 disabled:opacity-60 transition-colors flex items-center gap-1.5"
+              >
+                {deleting && <Loader2 className="w-3 h-3 animate-spin" />}
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
