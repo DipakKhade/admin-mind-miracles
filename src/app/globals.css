@@ -119,3 +119,134 @@
   --sidebar-border: hsl(240 3.7% 15.9%);
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
 }
+
+/* Print report styles */
+.print-report {
+  display: none;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print-report,
+  .print-report * {
+    visibility: visible;
+  }
+  .print-report {
+    display: block;
+    position: fixed;
+    inset: 0;
+    padding: 20px 30px;
+    background: white;
+  }
+  .print-report-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: 'Geist', 'Inter', system-ui, sans-serif;
+    color: #1a1a1a;
+  }
+  .print-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 8px;
+  }
+  .print-logo {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+  }
+  .print-header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0D2B1F;
+    margin: 0;
+  }
+  .print-header p {
+    font-size: 12px;
+    color: #555;
+    margin: 2px 0;
+  }
+  .print-contact {
+    font-size: 11px !important;
+    color: #777 !important;
+  }
+  .print-divider {
+    border-top: 2px solid #0D2B1F;
+    margin: 14px 0;
+  }
+  .print-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #0D2B1F;
+    margin: 0 0 14px 0;
+  }
+  .print-info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 14px;
+  }
+  .print-info-table td {
+    padding: 4px 8px;
+    font-size: 12px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .print-label {
+    font-weight: 600;
+    color: #555;
+    width: 140px;
+  }
+  .print-sessions-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+  }
+  .print-sessions-table th {
+    background: #0D2B1F;
+    color: white;
+    padding: 7px 8px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 11px;
+  }
+  .print-sessions-table td {
+    padding: 6px 8px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .print-sessions-table tbody tr:nth-child(even) {
+    background: #f9f9f9;
+  }
+  .print-sessions-table tfoot td {
+    border-top: 2px solid #0D2B1F;
+    padding: 7px 8px;
+  }
+  .print-center {
+    text-align: center;
+  }
+  .print-right {
+    text-align: right;
+  }
+  .print-bold {
+    font-weight: 700;
+  }
+  .print-empty {
+    text-align: center;
+    color: #999;
+    font-size: 13px;
+    padding: 30px 0;
+  }
+  .print-footer {
+    margin-top: 24px;
+    padding-top: 12px;
+    border-top: 1px solid #ddd;
+    text-align: center;
+    font-size: 10px;
+    color: #999;
+  }
+  .print-footer-brand {
+    font-weight: 600;
+    color: #0D2B1F;
+    margin-top: 2px;
+  }
+}
