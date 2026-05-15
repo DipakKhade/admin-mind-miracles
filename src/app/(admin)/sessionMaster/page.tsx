@@ -465,6 +465,7 @@ export default function SessionMasterPage() {
   const [data, setData] = useState<Session[]>([]);
   const [loading, setLoading] = useState(true);
   const [closingId, setClosingId] = useState<string | null>(null);
+  const [confirmClose, setConfirmClose] = useState<string | null>(null);
 
   const fetchData = useCallback(async () => {
     try {
@@ -485,14 +486,18 @@ export default function SessionMasterPage() {
   }, [fetchData]);
 
   async function handleClose(id: string) {
-    if (!confirm("Are you sure you want to close this session?")) return;
+    setConfirmClose(id);
+  }
 
-    setClosingId(id);
+  async function confirmCloseSession() {
+    if (!confirmClose) return;
+
+    setClosingId(confirmClose);
     try {
       const res = await fetch("/api/sessionMaster", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, status: "Closed" }),
+        body: JSON.stringify({ id: confirmClose, status: "Closed" }),
       });
 
       if (!res.ok) {
@@ -507,6 +512,7 @@ export default function SessionMasterPage() {
       toast.error("Something went wrong");
     } finally {
       setClosingId(null);
+      setConfirmClose(null);
     }
   }
 
@@ -595,6 +601,34 @@ export default function SessionMasterPage() {
           onClose={() => setEditSession(null)}
           onSuccess={fetchData}
         />
+      )}
+
+      {confirmClose && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="bg-white rounded-xl shadow-xl p-6 mx-4 max-w-sm w-full">
+            <h3 className="text-sm font-bold text-gray-900 mb-2">Close Session</h3>
+            <p className="text-sm text-gray-600 mb-5">
+              Are you sure you want to close this session?
+            </p>
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={() => setConfirmClose(null)}
+                disabled={closingId === confirmClose}
+                className="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmCloseSession}
+                disabled={closingId === confirmClose}
+                className="px-3 py-1.5 text-xs font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 disabled:opacity-60 transition-colors flex items-center gap-1.5"
+              >
+                {closingId === confirmClose && <Loader2 className="w-3 h-3 animate-spin" />}
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

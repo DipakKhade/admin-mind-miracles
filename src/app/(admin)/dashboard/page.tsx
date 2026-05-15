@@ -35,7 +35,7 @@ export default function DashboardPage() {
       }
       if (sesRes.ok) {
         const d = await sesRes.json();
-        setSessions(Array.isArray(d) ? d.length : 0);
+        setSessions(Array.isArray(d) ? d.filter((s: { status: string }) => s.status === "Active").length : 0);
       }
     } catch {
       // silently fail
@@ -56,7 +56,7 @@ export default function DashboardPage() {
       onClick: () => router.push("/clientMaster"),
     },
     {
-      label: "Total Sessions",
+      label: "Active Sessions",
       value: sessions.toLocaleString("en-IN"),
       icon: CalendarClock,
       color: "text-blue-600",
